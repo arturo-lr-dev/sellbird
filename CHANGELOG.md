@@ -8,6 +8,7 @@ minor versions can still change behaviour.
 ## [Unreleased]
 
 ### Changed
+- On screens <=900px the dashboard section nav slides into an off-canvas drawer: hamburger toggle, left-edge swipe to open, swipe/Escape to close, scrim, inert while closed, and no change to the desktop layout.
 
 - Seeding the signal catalog writes only a signal that is missing or whose catalog text changed. The dashboard seeds on every Today load, so this was a write per signal on every page view.
 - **The opt-out line takes any wording.** `compliance.opt_out_line` no longer

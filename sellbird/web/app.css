@@ -973,6 +973,9 @@ textarea.form-input { height: auto; padding: 8px 12px; }
 #lock-screen { background: var(--bg); }
 #lock-screen .card { box-shadow: var(--shadow-pop); }
 
+/* Drawer pieces only exist on small screens; desktop hides them. */
+.menu-toggle, .nav-scrim { display: none; }
+
 /* ── Small screens: the sidebar becomes a top bar ────────────── */
 
 @media (max-width: 900px) {
@@ -983,11 +986,50 @@ textarea.form-input { height: auto; padding: 8px 12px; }
     border-right: none; border-bottom: 1px solid var(--line); overflow: visible;
   }
   .brand .tagline { display: none; }
-  nav { order: 3; width: 100%; flex-direction: row; gap: 2px; overflow-x: auto; scrollbar-width: none; margin: 0 calc(-1 * var(--sp-4)); padding: 0 var(--sp-4) 2px; width: calc(100% + 2 * var(--sp-4)); }
+  .menu-toggle {
+    display: inline-grid; place-items: center;
+    width: 32px; height: 30px; flex: none;
+    margin-left: calc(-1 * var(--sp-2));
+    border: none; border-radius: var(--r-sm); background: none; color: var(--text-2);
+    cursor: pointer;
+  }
+  .menu-toggle .icon { width: 18px; height: 18px; }
+  body.nav-open .sidebar { z-index: 80; } /* the drawer + top bar must sit above the scrim */
+  body.nav-open .menu-toggle { background: var(--surface-2); color: var(--text); }
+
+  /* The nav leaves the top bar and lives in an off-canvas drawer. */
+  nav {
+    position: fixed; top: 0; bottom: 0; left: 0; z-index: 70;
+    width: min(300px, 84vw);
+    flex-direction: column; gap: var(--sp-4);
+    padding: var(--sp-4) var(--sp-3);
+    background: var(--bg); border-right: 1px solid var(--line);
+    box-shadow: var(--shadow-pop);
+    overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none;
+    visibility: hidden;
+    transform: translateX(-105%);
+    transition: transform 240ms var(--ease-out), visibility 0s linear 240ms;
+  }
   nav::-webkit-scrollbar { display: none; }
-  .nav-group { flex-direction: row; gap: 2px; }
-  .nav-label { display: none; }
-  nav button { width: auto; height: 30px; flex: none; }
+  nav.dragging, body.nav-open nav.dragging { transition: none; visibility: visible; }
+  body.nav-open nav {
+    visibility: visible;
+    transform: none;
+    transition: transform 240ms var(--ease-out), visibility 0s;
+  }
+  .nav-group { flex-direction: column; gap: 1px; }
+  nav button { width: 100%; height: 32px; flex: initial; }
+
+  .nav-scrim {
+    display: block; position: fixed; inset: 0; z-index: 65;
+    background: rgba(15, 15, 20, 0.45);
+    opacity: 0; visibility: hidden;
+    transition: opacity 240ms ease, visibility 0s linear 240ms;
+  }
+  body.nav-open .nav-scrim {
+    opacity: 1; visibility: visible;
+    transition: opacity 240ms ease, visibility 0s;
+  }
   .sidebar-foot { margin: 0 0 0 auto; flex-direction: row; align-items: center; border-top: none; padding: 0; }
   main.content { padding: var(--sp-5) var(--sp-4) 80px; }
   .tl-item { grid-template-columns: 52px 24px minmax(0, 1fr); }
