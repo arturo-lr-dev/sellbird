@@ -110,8 +110,11 @@
         <button data-theme-opt="light" onclick="setTheme('light')" title="Light" aria-label="Light"><svg class="icon" aria-hidden="true"><use href="#i-sun"/></svg></button>
         <button data-theme-opt="dark" onclick="setTheme('dark')" title="Dark" aria-label="Dark"><svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg></button>
       </div>
-      <button class="refresh-btn" onclick="loadCurrentTab()" title="Refresh this page">
-        <svg class="icon" style="width:13px;height:13px"><use href="#i-refresh"/></svg>Refresh</button>
+      <button type="button" class="theme-cycle" id="theme-cycle" title="Switch theme" aria-label="Switch theme">
+        <svg class="icon" aria-hidden="true"><use href="#i-monitor"/></svg>
+      </button>
+      <button class="refresh-btn" onclick="loadCurrentTab()" title="Refresh this page" aria-label="Refresh this page">
+        <svg class="icon" style="width:13px;height:13px"><use href="#i-refresh"/></svg><span class="refresh-label">Refresh</span></button>
     </div>
   </div>
 </aside>

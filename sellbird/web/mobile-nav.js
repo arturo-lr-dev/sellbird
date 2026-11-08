@@ -128,5 +128,36 @@
 
   mq.addEventListener('change', function () { setOpen(false); clearDrag(); });
 
+  // Theme: on phones the 3-choice switch collapses into one cycling button
+  // (same setTheme() as the desktop buttons, so the choice stays shared in
+  // localStorage and both UIs always agree).
+  var cycle = document.getElementById('theme-cycle');
+  if (cycle) {
+    var THEME_ORDER = ['auto', 'light', 'dark'];
+    var THEME_ICONS = { auto: '#i-monitor', light: '#i-sun', dark: '#i-moon' };
+    function currentTheme() {
+      try { return localStorage.getItem('sellbird-theme') || 'auto'; }
+      catch (e) { return 'auto'; }
+    }
+    function paintCycle() {
+      var t = currentTheme();
+      var use = cycle.querySelector('use');
+      if (use) use.setAttribute('href', THEME_ICONS[t] || THEME_ICONS.auto);
+      var label = 'Theme: ' + t + ' (tap to switch)';
+      cycle.setAttribute('aria-label', label);
+      cycle.title = label;
+    }
+    cycle.addEventListener('click', function () {
+      var next = THEME_ORDER[(THEME_ORDER.indexOf(currentTheme()) + 1) % THEME_ORDER.length];
+      if (typeof setTheme === 'function') setTheme(next);
+      paintCycle();
+    });
+    // Sync when the theme changes from the desktop switch (e.g. after rotate).
+    document.querySelectorAll('[data-theme-opt]').forEach(function (b) {
+      b.addEventListener('click', function () { setTimeout(paintCycle, 0); });
+    });
+    paintCycle();
+  }
+
   setOpen(false); // initial state: closed, inert on mobile only
 })();

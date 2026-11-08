@@ -973,8 +973,8 @@ textarea.form-input { height: auto; padding: 8px 12px; }
 #lock-screen { background: var(--bg); }
 #lock-screen .card { box-shadow: var(--shadow-pop); }
 
-/* Drawer pieces only exist on small screens; desktop hides them. */
-.menu-toggle, .nav-scrim { display: none; }
+/* Drawer pieces and the phone-only theme button don't exist on desktop. */
+.menu-toggle, .nav-scrim, .theme-cycle { display: none; }
 
 /* ── Small screens: the sidebar becomes a top bar ────────────── */
 
@@ -996,6 +996,23 @@ textarea.form-input { height: auto; padding: 8px 12px; }
   .menu-toggle .icon { width: 18px; height: 18px; }
   body.nav-open .sidebar { z-index: 80; } /* the drawer + top bar must sit above the scrim */
   body.nav-open .menu-toggle { background: var(--surface-2); color: var(--text); }
+
+  /* Compact header on phones: status dot without its label, one cycling
+     theme button instead of the 3-choice switch, icon-only refresh. */
+  .sellbird-status #header-status-text { display: none; }
+  .theme-switch { display: none; }
+  .theme-cycle {
+    display: inline-grid; place-items: center;
+    width: 28px; height: 28px; flex: none;
+    border: none; border-radius: var(--r-sm); cursor: pointer;
+    background: var(--surface); box-shadow: var(--btn-shadow); color: var(--text-3);
+    transition-property: background-color, color, scale; transition-duration: 150ms; transition-timing-function: ease-out;
+  }
+  .theme-cycle .icon { width: 14px; height: 14px; }
+  .theme-cycle:active { scale: 0.96; }
+  @media (hover: hover) { .theme-cycle:hover { color: var(--text); background: var(--surface-2); } }
+  .refresh-label { display: none; }
+  .refresh-btn { display: inline-grid; place-items: center; width: 28px; padding: 0; }
 
   /* The nav leaves the top bar and lives in an off-canvas drawer. */
   nav {
